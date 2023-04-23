@@ -1,5 +1,5 @@
 {
-  "name": "cypresstestsaca",
+  "name": "Automation Ex",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -22,6 +22,7 @@
   "dependencies": {
     "cypress-dotenv": "^2.0.0",
     "cypress-real-events": "^1.7.6",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "node-modules": "^1.0.1"
   }
 }

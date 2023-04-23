@@ -1,3 +1,11 @@
+const colorCarusel = {
+butonTC: "rgb(92, 184, 92)",
+APIList: "rgb(254, 152, 15)",
+
+}
+
+
+
 const inputs = {
     backgroundColor: "rgb(240, 240, 233)",
     buttonColor: "rgb(254, 152, 15)",
@@ -28,4 +36,4 @@ const inputs = {
 
  
   
-  export{inputs, personalInfo}
+  export{inputs, personalInfo, colorCarusel}

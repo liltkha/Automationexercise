@@ -1,96 +1,49 @@
 /// <reference types="cypress" />
 
-import { shopping } from "../../functioms/project1/TS1-HomePage";
+import { carusel, shopping } from "../../functioms/project1/TS1-HomePage";
 import { registration } from "../../functioms/project1/TS3-SignUp";
-import { inputs } from "../../utils/datas/data";
+import { colorCarusel, inputs } from "../../utils/datas/data";
+import { caruseltexts, message } from "../../utils/messages";
 
-describe("Add carts to the basket", () => {
-  it("Verify the UI of the Cart", () => {
-   registration.visit();
-    cy.get(".features_items > .title").contains("Features Items");
-    shopping.getFirstCartImg();
-    shopping.getFirstCarth2().should("have.css", "color", inputs.buttonColor);
-    shopping
-      .getFirstCartTitle()
-      .should("have.css", "color", inputs.addCartTitlecolor);
-    shopping
-      .getFirsrtCartBtn()
-      .and("have.css", "background-color", inputs.addCartBtnColor);
-    shopping
-      .getFirstCartView()
-      .contains("View Product")
-      .should("have.css", "color", inputs.viewProductColor);
-  });
-  it("Verify Add to Cart functionality", () => {
+describe("Home page", () => {
+  it("checks for carusel icons", () => {
     registration.visit();
-    shopping.getFirsrtCartBtn().click();
-    shopping.getModal(".modal-content").should("be.visible");
-  });
-  it("Verify the content of the modal", () => {
-    cy.visit(Cypress.env("globalUrl"));
-    shopping.getFirsrtCartBtn().click();
-    shopping.getModal().should("be.visible").find(".icon-box").should("exist");
-    shopping
-      .getModal()
-      .should("be.visible")
-      .find(".modal-title")
-      .should("exist");
-    shopping
-      .getModal()
-      .should("be.visible")
-      .find(".modal-body > :nth-child(2)")
-      .should("exist");
-    shopping
-      .getModal()
-      .should("be.visible")
-      .find(".modal-footer > .btn")
-      .should("exist");
-  });
-
-  it("Verify View Product button functionality", () => {
-    registration.visit();
-    shopping.getFirstCartView().click();
-    cy.url("includes", "product_details/1");
-  });
-});
-
-let productName, productCost, productQuantity;
-describe("HomePage", () => {
-  it("Verify cart adding from home page", () => {
-    registration.visit();
-    // cy.get('.features_items > :nth-child(3) > .product-image-wrapper > .single-products > .productinfo > .btn').click();
-    cy.get(".overlay-content>h2")
-      .eq(0)
-      .invoke("text")
-      .then(($val) => {
-        productCost = $val;
-      });
-    cy.get(".overlay-content>p")
-      .eq(0)
-      .invoke("text")
-      .then(($text) => {
-        productName = $text;
-      });
-    cy.get(".add-to-cart").eq(0).click();
-    cy.get("u").click();
-    cy.get(".product_image").should("be.exist");
-    cy.then(() => {
-      cy.get(".cart_total_price").should("contain", productCost);
+    cy.get(".item").then(($elem) => {
+      expect($elem).to.contain(caruseltexts.headingAuto);
+      expect($elem).to.contain(caruseltexts.headingEx);
+      expect($elem).to.contain(caruseltexts.heading);
     });
-    cy.get(".disabled").should("contain", "1");
-    cy.get(".col-sm-6 > .btn").click();
-    cy.get(".modal-footer > .btn").click();
-    cy.get(".modal-body > :nth-child(1)").and(
-      "have.text",
-      "Register / Login account to proceed on checkout.".trim()
-    );
+    carusel
+      .getbtnTC()
+      .should("be.visible")
+      .and("contain", caruseltexts.buttonTC);
+    carusel
+      .getbtnTC()
+      .should("have.css", "background-color", colorCarusel.butonTC);
+    carusel.getbtnTC().trigger("mouseover");
+    carusel
+      .getbtnAPIList()
+      .should("have.css", "background-color", colorCarusel.butonTC)
+      .and("contain", caruseltexts.buttonAPIList);
+    cy.wait(7000);
+    cy.get(".item")
+      .should("have.class", "active")
+      .find("img")
+      .should("be.visible")
+      .and("have.attr", "src", "/static/images/home/girl2.jpg");
+
+    // cy.clock();
+    // cy.get("#slider").find(".item.active").invoke("index").should("eq", 0);
+    // cy.tick(4000);
+    // cy.get("#slider").find(".item.active").invoke("index").should("eq", "1");
+    // cy.tick(4000);
+    // cy.get("#slider").find(".item.active").invoke("index").should("eq", "2");
   });
 });
 
-let numberCountPolo;
-
-describe("Add items to cart from Home Page", () => {
-  it("Add items in cart and try to checkout, when Logged out", () => {
+let numberCount, number;
+describe("Home page left section", () => {
+  it("Check Category $ Brands section", () => {
     registration.visit();
     cy.get("ul>li").each(($el, index, $list) => {
       expect($list).to.have.length(57);
@@ -102,12 +55,147 @@ describe("Add items to cart from Home Page", () => {
       expect($el).to.contain("Tops");
       expect($el).to.contain("Saree");
     });
-    cy.get(".nav > :nth-child(1) > a > .pull-right")
-      .invoke("text")
-      .then(($el) => {
-        cy.log($el);
-        numberCountPolo = $el.replace("(", "");
-        cy.log(numberCountPolo.slice(0, 1));
+    cy.get('[data-parent="#accordian"]').eq(1).click();
+    cy.get("#Men > .panel-body").then(($el) => {
+      expect($el).to.contain("Tshirts");
+      expect($el).to.contain("Jeans");
+    });
+    cy.get(":nth-child(3) > .panel-heading > .panel-title > a").click();
+    cy.get("#Kids > .panel-body").then(($el) => {
+      expect($el).to.contain("Dress");
+      expect($el).to.contain("Tops & Shirts");
+    });
+    cy.get(".brands_products").should("contain", "Brands");
+
+    cy.get(".brands-name").then(($el) => {
+      expect($el).to.contain("Polo");
+      cy.get(".nav > :nth-child(1) > a > .pull-right")
+        .invoke("text")
+        .then(($el) => {
+          numberCount = $el;
+          number = parseInt(numberCount.slice(1, 2));
+          cy.log(typeof number);
+        });
+      cy.get(".brands-name > .nav > :nth-child(1) > a").click();
+      cy.get(".product-overlay").each(($el, index, $list) => {
+        expect($list).to.have.length(number);
       });
+      expect($el).to.contain("H&M");
+      cy.get(".nav > :nth-child(2) > a > .pull-right")
+        .invoke("text")
+        .then(($el) => {
+          numberCount = $el;
+          number = parseInt(numberCount.slice(1, 2));
+          cy.log(typeof number);
+        });
+      cy.get(".brands-name > .nav > :nth-child(2) > a").click();
+      cy.get(".product-overlay").each(($el, index, $list) => {
+        expect($list).to.have.length(number);
+      });
+      expect($el).to.contain("Madame");
+      cy.get(".nav > :nth-child(3) > a > .pull-right")
+        .invoke("text")
+        .then(($el) => {
+          numberCount = $el;
+          number = parseInt(numberCount.slice(1, 2));
+          cy.log(typeof number);
+        });
+      cy.get(".brands-name > .nav > :nth-child(3) > a").click();
+      cy.get(".product-overlay").each(($el, index, $list) => {
+        expect($list).to.have.length(number);
+      });
+      expect($el).to.contain("Mast & Harbour");
+      cy.get(".nav > :nth-child(4) > a > .pull-right")
+        .invoke("text")
+        .then(($el) => {
+          numberCount = $el;
+          number = parseInt(numberCount.slice(1, 2));
+          cy.log(typeof number);
+        });
+      cy.get(".brands-name > .nav > :nth-child(4) > a").click();
+      cy.get(".product-overlay").each(($el, index, $list) => {
+        expect($list).to.have.length(number);
+      });
+      expect($el).to.contain("Babyhug");
+      cy.get(".nav > :nth-child(5) > a > .pull-right")
+        .invoke("text")
+        .then(($el) => {
+          numberCount = $el;
+          number = parseInt(numberCount.slice(1, 2));
+          cy.log(typeof number);
+        });
+      cy.get(".brands-name > .nav > :nth-child(5) > a").click();
+      cy.get(".product-overlay").each(($el, index, $list) => {
+        expect($list).to.have.length(number);
+      });
+      expect($el).to.contain("Allen Solly Junior");
+      cy.get(".nav > :nth-child(6) > a > .pull-right")
+        .invoke("text")
+        .then(($el) => {
+          numberCount = $el;
+          number = parseInt(numberCount.slice(1, 2));
+          cy.log(typeof number);
+        });
+      cy.get(".brands-name > .nav > :nth-child(6) > a").click();
+      cy.get(".product-overlay").each(($el, index, $list) => {
+        expect($list).to.have.length(number);
+      });
+      expect($el).to.contain("Kookie Kids");
+      cy.get(".nav > :nth-child(7) > a > .pull-right")
+        .invoke("text")
+        .then(($el) => {
+          numberCount = $el;
+          number = parseInt(numberCount.slice(1, 2));
+          cy.log(typeof number);
+        });
+      cy.get(".brands-name > .nav > :nth-child(7) > a").click();
+      cy.get(".product-overlay").each(($el, index, $list) => {
+        expect($list).to.have.length(number);
+      });
+      expect($el).to.contain("Biba");
+      cy.get(".nav > :nth-child(8) > a > .pull-right")
+        .invoke("text")
+        .then(($el) => {
+          numberCount = $el;
+          number = parseInt(numberCount.slice(1, 2));
+          cy.log(typeof number);
+        });
+      cy.get(".brands-name > .nav > :nth-child(8) > a").click();
+      cy.get(".product-overlay").each(($el, index, $list) => {
+        expect($list).to.have.length(number);
+      });
+    });
+  });
+});
+
+describe("Home page Subscribe form", () => {
+  it("allow users to subscribe to the email list", () => {
+    registration.visit();
+    cy.get(".single-widget").should("contain", "Subscription");
+    cy.get(".single-widget").should(
+      "contain",
+      "Get the most recent updates from our site and be updated your self..."
+    );
+    cy.get("#susbscribe_email").type("test@test.com");
+    cy.get("#subscribe").click();
+    cy.get(".alert-success").should("exist").contains(message.successSubscribe);
+  });
+  // if message contains this email
+  //  cy.get('.alert-success').should("exist").contain("test@test.com"")
+  it("does NOT allow invalid email address", () => {
+    registration.visit();
+    cy.get("#susbscribe_email").type("test");
+    cy.get("#subscribe").click();
+    // cy.get('.alert-success').should("not exist");
+  });
+});
+
+describe("Home page Feachtures items", () => {
+  it("Number of oll product Items", () => {
+    registration.visit();
+    cy.get(".features_items > .title").contains("Features Items");
+    cy.get(".product-overlay").its("length").should("eq", 34);
+    shopping.getFirstCartView().click();
+    cy.url("includes", "product_details/1");
   });
 });

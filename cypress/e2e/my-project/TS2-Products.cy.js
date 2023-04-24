@@ -1,15 +1,15 @@
 /// <reference types="cypress" />
 
-import { productpage } from "../../functioms/project1/TS2-Product";
+import { category, carusel } from "../../functioms/project1/TS1-HomePage";
 import { registration } from "../../functioms/project1/TS3-SignUp";
-import { carusel, shopping } from "../../functioms/project1/TS1-HomePage";
-import { inputs } from "../../utils/datas/data";
+import { shopping, productpage } from "../../functioms/project1/TS2-Product";
+import { colorCarusel, inputs } from "../../utils/datas/data";
 import { caruseltexts, message } from "../../utils/messages";
 
 describe("Product page -Checkout ", () => {
   it("Verify search field by category", () => {
     registration.visit("products");
-    shopping.getFirstCartImg();
+    shopping.getFirstProductimg();
     shopping.getFirstCarth2().should("have.css", "color", inputs.buttonColor);
     shopping
       .getFirstCartTitle()

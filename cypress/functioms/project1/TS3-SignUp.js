@@ -31,13 +31,9 @@ class SignUp {
   getGender() {
     return cy.get("#id_gender1");
   }
-  // getName(){
-  //   return cy.get('[data-qa="name"]');
-
-  // }
-  // getEmail(){
-  //   return cy.get('[data-qa="email"]');
-  // }
+  gettitlesignUp(){
+    return cy.get('.signup-form > h2')
+  }
   getPassword() {
     return cy.get('[data-qa="password"]');
   }

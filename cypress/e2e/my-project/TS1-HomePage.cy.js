@@ -1,14 +1,15 @@
 /// <reference types="cypress" />
 
-import { carusel, shopping } from "../../functioms/project1/TS1-HomePage";
+import { category, carusel } from "../../functioms/project1/TS1-HomePage";
 import { registration } from "../../functioms/project1/TS3-SignUp";
+import { shopping, productpage } from "../../functioms/project1/TS2-Product";
 import { colorCarusel, inputs } from "../../utils/datas/data";
 import { caruseltexts, message } from "../../utils/messages";
 
 describe("Home page", () => {
   it("checks for carusel icons", () => {
     registration.visit();
-    cy.get(".item").then(($elem) => {
+   category.getItem().then(($elem) => {
       expect($elem).to.contain(caruseltexts.headingAuto);
       expect($elem).to.contain(caruseltexts.headingEx);
       expect($elem).to.contain(caruseltexts.heading);
@@ -26,11 +27,11 @@ describe("Home page", () => {
       .should("have.css", "background-color", colorCarusel.butonTC)
       .and("contain", caruseltexts.buttonAPIList);
     cy.wait(7000);
-    cy.get(".item")
+    category.getItem()
       .should("have.class", "active")
       .find("img")
       .should("be.visible")
-      .and("have.attr", "src", "/static/images/home/girl2.jpg");
+      .and("have.attr", "src", inputs.img1);
 
     // cy.clock();
     // cy.get("#slider").find(".item.active").invoke("index").should("eq", 0);
@@ -43,25 +44,25 @@ describe("Home page", () => {
 
 let numberCount, number;
 describe("Home page left section", () => {
-  it("Check Category $ Brands section", () => {
+  it("Check Category & Brands section", () => {
     registration.visit();
     cy.get("ul>li").each(($el, index, $list) => {
       expect($list).to.have.length(57);
     });
-    cy.get(".left-sidebar > h2").should("contain", "Category");
-    cy.get('[data-parent="#accordian"]').eq(0).click();
-    cy.get("#Women > .panel-body").then(($el) => {
+   category.getTitlecategory().should("contain", "Category");
+    category.getparentCat().eq(0).click();
+    category.getWomanPanel().then(($el) => {
       expect($el).to.contain("Dress");
       expect($el).to.contain("Tops");
       expect($el).to.contain("Saree");
     });
-    cy.get('[data-parent="#accordian"]').eq(1).click();
-    cy.get("#Men > .panel-body").then(($el) => {
+   category.getparentCat().eq(1).click();
+   category.getManPanel().then(($el) => {
       expect($el).to.contain("Tshirts");
       expect($el).to.contain("Jeans");
     });
-    cy.get(":nth-child(3) > .panel-heading > .panel-title > a").click();
-    cy.get("#Kids > .panel-body").then(($el) => {
+   category.getChilCat().click();
+   category.getchildpanel().then(($el) => {
       expect($el).to.contain("Dress");
       expect($el).to.contain("Tops & Shirts");
     });

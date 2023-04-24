@@ -26,6 +26,9 @@ Cypress.Commands.add('generateRandomName', (length) => {
       return `test${result}`;
   }) 
   
+  Cypress.Commands.add("getByData", (selector) => {
+    return cy.get(`[data-test=${selector}]`)
+  })
 
 Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { 
 

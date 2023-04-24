@@ -1,6 +1,6 @@
 class Carusel {
   visit(endpoint) {
-    cy.visit(Cypress.env("globalUrl") + endpoint);
+   return  cy.visit(Cypress.env("globalUrl") + endpoint);
   }
   getbtnTC() {
     return cy.get(".active > :nth-child(1) > .test_cases_list > .btn");
@@ -12,56 +12,31 @@ class Carusel {
 
 export const carusel = new Carusel();
 
-class AddToCart {
+class Category {
   visit(endpoint) {
-    cy.visit(Cypress.env("globalUrl") + endpoint);
+   return  cy.visit(Cypress.env("globalUrl") + endpoint);
   }
-
-  getFirstCart() {
-    return cy.get(".features_items > :nth-child(3)");
+  getItem( ) {
+    return  cy.get(".item");
   }
-  getFirstCartImg() {
-    return cy
-      .get(
-        ".features_items > :nth-child(3) > .product-image-wrapper > .single-products > .productinfo > img"
-      )
-      .should("be.visible")
-      .and("have.attr", "src", "/get_product_picture/1");
+  getTitlecategory() {
+    return cy.get(".left-sidebar > h2");
   }
-  //   /html/body/div[2]/div/div/div/a
-  getFirstCarth2() {
-    return cy
-      .get(
-        ".features_items > :nth-child(3) > .product-image-wrapper > .single-products > .productinfo > h2"
-      )
-      .contains("Rs. 500");
+  getparentCat() {
+    return cy.get('[data-parent="#accordian"]');
   }
-  getFirstCartTitle() {
-    return cy
-      .get(
-        ".features_items > :nth-child(3) > .product-image-wrapper > .single-products > .productinfo > p"
-      )
-      .contains("Blue Top");
+  getWomanPanel() {
+    return cy.get("#Women > .panel-body");
   }
-  getFirsrtCartBtn() {
-    return cy
-      .get(
-        ".features_items > :nth-child(3) > .product-image-wrapper > .single-products > .productinfo > .btn"
-      )
-      .contains("Add to cart");
+  getManPanel() {
+    return cy.get("#Men > .panel-body");
   }
-  getFirstCartView() {
-    return cy.get(
-      ":nth-child(3) > .product-image-wrapper > .choose > .nav > li > a"
-    );
+  getChilCat() {
+    return cy.get(":nth-child(3) > .panel-heading > .panel-title > a");
   }
-
-  getCartOverlay(arg) {
-    return cy.get(".product-overlay").eq(arg);
-  }
-
-  getModal() {
-    return cy.get(".modal-content");
+  getchildpanel() {
+    return cy.get("#Kids > .panel-body");
   }
 }
-export const shopping = new AddToCart();
+
+export const category = new Category();

@@ -15,7 +15,7 @@ export const productpage = new ProductPage();
 
 class AddToCart {
   visit(endpoint) {
-    cy.visit(Cypress.env("globalUrl") + endpoint);
+   return cy.visit(Cypress.env("globalUrl") + endpoint);
   }
 
   getFirstCart() {
